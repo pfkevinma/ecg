@@ -1,10 +1,12 @@
 from keras import backend as K
+from keras import utils
 
 def _bn_relu(layer, dropout=0, **params):
     from keras.layers import BatchNormalization
     from keras.layers import Activation
     layer = BatchNormalization()(layer)
     layer = Activation(params["conv_activation"])(layer)
+    # layer = Activation.LeakyRelu()(layer)
 
     if dropout > 0:
         from keras.layers import Dropout
@@ -136,4 +138,6 @@ def build_network(**params):
     model = Model(inputs=[inputs], outputs=[output])
     if params.get("compile", True):
         add_compile(model, **params)
+    # dot_img_file = '/content/ecg/model_1.png'
+    # utils.plot_model(model, to_file=dot_img_file, show_shapes=True)
     return model

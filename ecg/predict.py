@@ -24,3 +24,11 @@ if __name__ == '__main__':
     parser.add_argument("model_path", help="path to model")
     args = parser.parse_args()
     probs = predict(args.data_json, args.model_path)
+    
+    # prediction = [sst.mode(np.argmax(prob, axis=2).squeeze())[0][0] for prob in probs]
+    # return preproc.int_to_class[prediction]
+
+    for prob in probs:
+        prediction = sst.mode(np.argmax(prob, axis=2).squeeze())[0][0]
+        print(preproc.int_to_class[prediction])
+

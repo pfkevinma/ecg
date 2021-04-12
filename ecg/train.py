@@ -14,7 +14,7 @@ import network
 import load
 import util
 
-MAX_EPOCHS = 100
+MAX_EPOCHS = 1
 
 def make_save_dir(dirname, experiment_name):
     start_time = str(int(time.time())) + '-' + str(random.randrange(1000))
@@ -35,6 +35,7 @@ def train(args, params):
     dev = load.load_dataset(params['dev'])
     print("Building preprocessor...")
     preproc = load.Preproc(*train)
+    print(f"train_set_classes: {preproc.classes}")
     print("Training size: " + str(len(train[0])) + " examples.")
     print("Dev size: " + str(len(dev[0])) + " examples.")
 
@@ -61,18 +62,27 @@ def train(args, params):
         filepath=get_filename_for_saving(save_dir),
         save_best_only=False)
 
+
+
     batch_size = params.get("batch_size", 32)
+
+    # summary = str(model.summary(print_fn=lambda x: fh.write(x + '\n')))
+    # out = open("/content/ecg/report.txt",'w')
+    # out.write(summary)
+    # out.close
 
     if params.get("generator", False):
         train_gen = load.data_generator(batch_size, preproc, *train)
         dev_gen = load.data_generator(batch_size, preproc, *dev)
-        model.fit_generator(
+        history = model.fit_generator(
             train_gen,
             steps_per_epoch=int(len(train[0]) / batch_size),
             epochs=MAX_EPOCHS,
             validation_data=dev_gen,
             validation_steps=int(len(dev[0]) / batch_size),
             callbacks=[checkpointer, reduce_lr, stopping])
+        # util.learning_curve(history)
+
     else:
         train_x, train_y = preproc.process(*train)
         dev_x, dev_y = preproc.process(*dev)
