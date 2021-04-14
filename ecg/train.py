@@ -35,7 +35,7 @@ def train(args, params):
     dev = load.load_dataset(params['dev'])
     print("Building preprocessor...")
     preproc = load.Preproc(*train)
-    print(f"train_set_classes: {preproc.classes}")
+    print("train_set_classes:", preproc.classes)
     print("Training size: " + str(len(train[0])) + " examples.")
     print("Dev size: " + str(len(dev[0])) + " examples.")
 
