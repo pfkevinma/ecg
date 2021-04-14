@@ -12,4 +12,4 @@ curl -O $url/REFERENCE-v3.csv
 
 cd ..
 
-python build_sample_datasets.py
+python build_datasets.py
