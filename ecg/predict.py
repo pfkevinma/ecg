@@ -16,24 +16,20 @@ def predict(data_json, model_path):
     model = keras.models.load_model(model_path)
     probs = model.predict(x, verbose=1)
 
-    return probs
+    return probs, preproc
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("data_json", help="path to data json")
     parser.add_argument("model_path", help="path to model")
     args = parser.parse_args()
-    probs = predict(args.data_json, args.model_path)
+    probs, preproc= predict(args.data_json, args.model_path)
     
-    file = open("test.txt", "w")
-    for row in probs:
-        np.savetxt(file, row)
-    file.close()
-    
-    # prediction = [sst.mode(np.argmax(prob, axis=2).squeeze())[0][0] for prob in probs]
-    # return preproc.int_to_class[prediction]
-
-    # for prob in probs:
-    #     prediction = sst.mode(np.argmax(prob, axis=2).squeeze())[0][0]
-    #     print(preproc.int_to_class[prediction])
-
+    ans = sst.mode(np.argmax(probs, axis=2), axis=1)[0]
+ 
+    file = open("answer.txt", "w")
+    for row in ans:
+      file.write(preproc.classes[row[0]])
+      file.write("\n")
+    file.close
