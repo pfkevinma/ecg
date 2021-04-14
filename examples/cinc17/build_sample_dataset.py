@@ -17,12 +17,14 @@ def load_all(data_path):
 
     dataset = []
     for record, label in tqdm.tqdm(records):
-      if label == "N" or label == "A":
-        ecg_file = os.path.join(data_path, record + ".mat")
-        ecg_file = os.path.abspath(ecg_file)
-        ecg = load_ecg_mat(ecg_file)
-        num_labels = ecg.shape[0] / STEP
-        dataset.append((ecg_file, [label]*num_labels))
+        if label == "~" :
+            pass
+        else:
+            ecg_file = os.path.join(data_path, record + ".mat")
+            ecg_file = os.path.abspath(ecg_file)
+            ecg = load_ecg_mat(ecg_file)
+            num_labels = ecg.shape[0] / STEP
+            dataset.append((ecg_file, [label]*num_labels))
     return dataset 
 
 def make_json(save_path, dataset):

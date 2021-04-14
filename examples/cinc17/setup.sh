@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url=https://www.physionet.org/challenge/2017/
+url=https://archive.physionet.org/challenge/2017/
 
 mkdir data && cd data
 
@@ -12,4 +12,4 @@ curl -O $url/REFERENCE-v3.csv
 
 cd ..
 
-python build_datasets.py
+python build_sample_datasets.py
