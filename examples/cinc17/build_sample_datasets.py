@@ -35,10 +35,21 @@ def make_json(save_path, dataset):
             json.dump(datum, fid)
             fid.write('\n')
 
+def make_txt(save_path):
+    label_file = os.path.join(data_path, "REFERENCE.csv")
+    with open(save_path, "w") as ansfile:
+        with open(label_file, 'r') as fid:
+            for l in fid:
+                for ele in l.strip().split(","):
+                    print >> ansfile, ele
+                print >> ansfile, "\n"
+
+
 if __name__ == "__main__":
 
     data_path = "data/sample2017/validation/"
     sample_dataset = load_all(data_path)
     make_json("data/sample2017/sample.json", sample_dataset)
+    make_txt("data/sample2017/ansfile.txt")
 
 #/content/ecg/examples/cinc17/data/sample2017/validation/REFERENCE.csv
