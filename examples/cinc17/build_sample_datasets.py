@@ -41,7 +41,9 @@ def make_txt(save_path):
         with open(label_file, 'r') as fid:
             for l in fid:
                 [name, ans] = l.strip().split(",") 
-                if not ans == "~":
+                if ans == "~":
+                    pass
+                else:
                     print >> ansfile, name+", "+ans
 
 
