@@ -40,9 +40,9 @@ def make_txt(save_path):
     with open(save_path, "w") as ansfile:
         with open(label_file, 'r') as fid:
             for l in fid:
-                for ele in l.strip().split(","):
-                    print >> ansfile, ele
-                print >> ansfile, "\n"
+                [name, ans] = l.strip().split(",") 
+                if not ans == "~":
+                    print >> ansfile, name+", "+ans
 
 
 if __name__ == "__main__":

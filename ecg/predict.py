@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 import keras
 import os
+import scipy.stats as sst
 
 import load
 import util
