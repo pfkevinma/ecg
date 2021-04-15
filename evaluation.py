@@ -5,7 +5,7 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 import os
 
-ground_truth_filepath = os.getcwd()+"/examples/cinc17/data/sample2017/validation/REFERENCE.csv" # start from root
+ground_truth_filepath = os.getcwd()+"/examples/cinc17/data/sample2017/ansfile.txt" # start from root
 prediction_filepath = os.getcwd()+"/answers.txt"
 
 
