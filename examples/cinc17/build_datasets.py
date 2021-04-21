@@ -4,6 +4,17 @@ import os
 import random
 import scipy.io as sio
 import tqdm
+from scipy import signal
+from scipy.signal import butter, iirnotch
+
+def butterworth_filter(data, fs=300, order=5, cutoff_high=1, cutoff_low=40, powerline=60):
+    b, a = butter(order, cutoff_high/(0.5*fs), btype='high', analog=False, output='ba')
+    x = signal.filtfilt(b, a, data)
+    d, c = butter(order, cutoff_low/(0.5*fs), btype='low', analog=False, output='ba')
+    y = signal.filtfilt(d, c, x)
+    f, e = iirnotch(powerline/(0.5*fs), 30)
+    z = signal.filtfilt(f, e, y)     
+    return z
 
 STEP = 256
 
@@ -37,6 +48,7 @@ def load_3_classes(data_path):
             ecg_file = os.path.join(data_path, record + ".mat")
             ecg_file = os.path.abspath(ecg_file)
             ecg = load_ecg_mat(ecg_file)
+            ecg = butterworth_filter(ecg)
             num_labels = ecg.shape[0] / STEP
             dataset.append((ecg_file, [label]*num_labels))
     return dataset 
@@ -66,3 +78,4 @@ if __name__ == "__main__":
     make_json("train.json", train)
     make_json("dev.json", dev)
 
+#/data/REFERENCE-v3.csv

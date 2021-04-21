@@ -51,7 +51,7 @@ def train(args, params):
 
     model = network.build_network(**params)
 
-    stopping = keras.callbacks.EarlyStopping(patience=8)
+    stopping = keras.callbacks.EarlyStopping(patience=30)
 
     reduce_lr = keras.callbacks.ReduceLROnPlateau(
         factor=0.1,
@@ -74,7 +74,7 @@ def train(args, params):
     if params.get("generator", False):
         train_gen = load.data_generator(batch_size, preproc, *train)
         dev_gen = load.data_generator(batch_size, preproc, *dev)
-        history = model.fit_generator(
+        model.fit_generator(
             train_gen,
             steps_per_epoch=int(len(train[0]) / batch_size),
             epochs=MAX_EPOCHS,

@@ -83,10 +83,19 @@ def load_ecg(record):
     return ecg[:trunc_samp]
 
 if __name__ == "__main__":
-    data_json = "examples/cinc17/train.json"
+    data_json = "cinc17/train.json"
     train = load_dataset(data_json)
     preproc = Preproc(*train)
     gen = data_generator(32, preproc, *train)
     for x, y in gen:
         print(x.shape, y.shape)
         break
+    # x, y = preproc.process(*train)
+    # print(x.shape, y.shape)
+    # with open('inspect_data_x', 'w') as f:
+    #     for ele in x[0]:
+    #         f.write(str(ele)+'\n')
+    #
+    # with open('inspect_data_y', 'w') as f:
+    #     f.write(str(y[0])+'\n')
+

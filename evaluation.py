@@ -5,8 +5,8 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 import os
 
-ground_truth_filepath = os.getcwd()+"/examples/cinc17/data/sample2017/ansfile.txt" # start from root
-prediction_filepath = os.getcwd()+"/answer.txt"
+ground_truth_filepath = os.getcwd()+"/examples/cinc17/data/sample2017/ansfile.txt"
+prediction_filepath = os.getcwd()+"/predict_answers.txt"
 
 
 y_predict = []
@@ -16,8 +16,8 @@ data = {}
 
 with open(ground_truth_filepath, "r") as f:
 	for line in f:
- 		y_true.append(line.split(",")[1].strip())
- 	data["y_true"] = y_true
+		y_true.append(line.split(",")[1].strip())
+	data["y_true"] = y_true
 
 with open(prediction_filepath, "r") as f:
 	for line in f:

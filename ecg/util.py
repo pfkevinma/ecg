@@ -1,6 +1,6 @@
 import os
 import cPickle as pickle
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 def load(dirname):
     preproc_f = os.path.join(dirname, "preproc.bin")
