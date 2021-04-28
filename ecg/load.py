@@ -9,6 +9,8 @@ import os
 import random
 import scipy.io as sio
 import tqdm
+from scipy import signal
+from scipy.signal import butter, iirnotch
 
 STEP = 256
 
@@ -75,12 +77,22 @@ def load_ecg(record):
         ecg = np.load(record)
     elif os.path.splitext(record)[1] == ".mat":
         ecg = sio.loadmat(record)['val'].squeeze()
+        ecg = butterworth_filter(ecg)
     else: # Assumes binary 16 bit integers
         with open(record, 'r') as fid:
             ecg = np.fromfile(fid, dtype=np.int16)
 
     trunc_samp = STEP * int(len(ecg) / STEP)
     return ecg[:trunc_samp]
+
+def butterworth_filter(data, fs=300, order=5, cutoff_high=1, cutoff_low=40, powerline=60):
+    b, a = butter(order, cutoff_high/(0.5*fs), btype='high', analog=False, output='ba')
+    x = signal.filtfilt(b, a, data)
+    d, c = butter(order, cutoff_low/(0.5*fs), btype='low', analog=False, output='ba')
+    y = signal.filtfilt(d, c, x)
+    f, e = iirnotch(powerline/(0.5*fs), 30)
+    z = signal.filtfilt(f, e, y)     
+    return z
 
 if __name__ == "__main__":
     data_json = "cinc17/train.json"
